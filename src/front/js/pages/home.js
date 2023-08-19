@@ -7,12 +7,12 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="container text-center mt-5">
+		<div className="container text-center text-light mt-5">
 			<h1>You must authenticate to continue</h1>
-			<span>Not a member yet? Click on the button below and sign up first!</span>
+			<p className="mt-5 mb-2">Not a member yet? Click on the button below and sign up first!</p>
 			<div>
 				<Link to="/signup">
-					<button className="btn btn-primary">Sign Up</button>
+					<button className="btn btn-primary mb-5">Sign Up</button>
 				</Link>
 			</div>
 		</div>

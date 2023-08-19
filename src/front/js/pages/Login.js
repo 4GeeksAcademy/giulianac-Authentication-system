@@ -25,9 +25,9 @@ function Login() {
     };
 
     return (
-        <div className="container my-3">
-            <h1 className="text-center mb-4">Log In</h1>
-            <form className="p-3" onSubmit={handleSubmit}>
+        <div className="container my-3 mt-5">
+            <form className="m-auto" onSubmit={handleSubmit}>
+                <h1 className="form-title login text-center mb-4">Log In</h1>
                 <div className="form-group mb-3">
                     <label htmlFor="inputEmail">Email address</label>
                     <input
