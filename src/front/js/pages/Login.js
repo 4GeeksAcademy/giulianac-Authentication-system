@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Context } from '../store/appContext';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -8,10 +8,20 @@ function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        actions.login(email, password)
-        store.viewLogged ? navigate("/demo") : null;
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await actions.login(email, password);
+
+            if (store.viewLogged) {
+                navigate("/private");
+            }
+        } catch (error) {
+            console.error("An error occurred during login:", error);
+        }
+
+        e.target.reset();
     };
 
     return (

@@ -104,7 +104,7 @@ def login():
         raise APIException("You must send the password in the body", status_code=400)
     user_data = User.query.filter_by(email=body["email"]).first()
     if user_data is None:
-        raise APIException("User doesn't exist", status_code=400)
+        raise APIException("Bad username or password", status_code=400)
     if bcrypt.check_password_hash(user_data.password, body["password"]) is False:
         raise APIException("Bad username or password", status_code=400)
     access_token = create_access_token(identity=body["email"])
@@ -114,7 +114,7 @@ def login():
 @jwt_required()
 def private():
     logged_user = get_jwt_identity()
-    return jsonify({"You are logged in as": logged_user}), 200
+    return jsonify({"User": logged_user}), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

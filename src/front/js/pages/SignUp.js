@@ -8,13 +8,21 @@ function SignUp() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        actions.signUp(email, password)
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await actions.signUp(email, password);
+
+            if (store.viewSignUp) {
+                navigate("/login");
+            }
+        } catch (error) {
+            console.error("An error occurred during signup:", error);
+        }
+
         e.target.reset();
     };
-
-    store.viewSignUp ? navigate("/login") : null;
 
     return (
         <div className="container my-3">
@@ -43,7 +51,7 @@ function SignUp() {
                     />
                 </div>
                 <div className="row text-center">
-                    <button type="submit" className="btn btn-success w-50 mx-auto mt-4">Submit</button>
+                    <button type="submit" className="btn btn-primary w-50 mx-auto mt-4">Sign Up</button>
                     <Link to="/login">
                         <small>or log in instead</small>
                     </Link>

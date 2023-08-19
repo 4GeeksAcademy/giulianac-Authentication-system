@@ -9,22 +9,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			token: null,
 
 			message: null,
-			loggedUser: {},
+			loggedUser: "",
 		},
 		actions: {
-
-			getMessage: async () => {
-				try {
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				} catch (error) {
-					console.log("Error loading message from backend", error)
-				}
-			},
 
 			login: async (email, password) => {
 				try {
@@ -44,9 +31,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(data);
 
 					if (resp.status == 200) {
-						sessionStorage.setItem("token", data.access_token)
+						localStorage.setItem("token", data.access_token)
 						setStore({ viewLogged: true })
-						alert("User logged in");
 					} else alert(data.message);
 
 				} catch (err) {
@@ -55,6 +41,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			signUp: async (email, password) => {
+				if (!email || !password) {
+					alert("Please enter both email and password");
+				}
 				try {
 					const options = {
 						method: 'POST',
@@ -72,7 +61,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (resp.status == 200) {
 						setStore({ viewSignUp: true })
-						alert("User registered successfully");
+						alert("User registered successfully")
 					} else alert(data.message);
 
 				} catch (err) {
@@ -81,9 +70,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			private: async () => {
-				const token = sessionStorage.getItem("token")
-				const store = getStore();
+				const token = localStorage.getItem("token");
 				setStore({ token: token });
+				if (!token) {
+					navigate("/")
+				};
 
 				try {
 					const options = {
@@ -96,11 +87,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const resp = await fetch(process.env.BACKEND_URL + "/private", options);
 					const data = await resp.json();
-
-					if (resp.status == 200) {
-						setStore({ loggedUser: data });
-						console.log(store.loggedUser);
-					}
+					setStore({ loggedUser: data.User });
+					console.log(store.loggedUser);
 				}
 
 				catch (err) {
@@ -109,8 +97,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			logout: () => {
-				const store = getStore();
-				sessionStorage.removeItem(store.token);
+				localStorage.clear();
+				setStore({ viewLogged: false })
+			},
+
+			toggleSignUp: (value) => {
+				setStore({ viewSignUp: value })
 			},
 		}
 	};
