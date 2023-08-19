@@ -12,7 +12,7 @@ export const Home = () => {
 			<span>Not a member yet? Click on the button below and sign up first!</span>
 			<div>
 				<Link to="/signup">
-					<button className="btn btn-primary" onClick={() => actions.toggleSignUp(true)}>Sign Up</button>
+					<button className="btn btn-primary">Sign Up</button>
 				</Link>
 			</div>
 		</div>

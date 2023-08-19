@@ -13,10 +13,10 @@ function SignUp() {
 
         try {
             await actions.signUp(email, password);
-
             if (store.viewSignUp) {
                 navigate("/login");
             }
+
         } catch (error) {
             console.error("An error occurred during signup:", error);
         }

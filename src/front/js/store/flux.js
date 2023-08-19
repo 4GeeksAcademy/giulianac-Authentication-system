@@ -58,23 +58,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const resp = await fetch(process.env.BACKEND_URL + "/signup", options);
 					const data = await resp.json();
+					console.log(data);
 
 					if (resp.status == 200) {
-						setStore({ viewSignUp: true })
 						alert("User registered successfully")
-					} else alert(data.message);
+						setStore({ viewSignUp: true })
+					} else {
+						alert(data.message);
+					}
 
 				} catch (err) {
-					console.error("An error has occurred", err);
+					console.error("An error has occurred during signup", err);
 				}
 			},
 
 			private: async () => {
 				const token = localStorage.getItem("token");
 				setStore({ token: token });
-				if (!token) {
-					navigate("/")
-				};
 
 				try {
 					const options = {
